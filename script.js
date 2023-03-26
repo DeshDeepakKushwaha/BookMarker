@@ -4,9 +4,18 @@ const modalClose = document.getElementById("close-modal");
 const bookmarkForm = document.getElementById("bookmark-form");
 const websiteNameEl = document.getElementById("website-name");
 const websiteUrlEl = document.getElementById("website-url");
-const bookmarksContainer = document.getElementById("bookmarks-container");
+const websiteFolderEl = document.getElementById("folder");
+const bookmarksContainer1 = document.getElementById("bookmarks-container1");
+const bookmarksContainer2 = document.getElementById("bookmarks-container2");
+const bookmarksContainer3 = document.getElementById("bookmarks-container3");
+const bookmarksContainer4 = document.getElementById("bookmarks-container4");
+const bookmarksContainer5 = document.getElementById("bookmarks-container5");
 
-let bookmarks = {};
+let socialBookmarks = {};
+let blogBookmarks = {};
+let toolBookmarks = {};
+let devBookmarks = {};
+let courseBookmarks = {};
 
 // Show Modal, Focus on Input
 function showModal() {
@@ -41,7 +50,7 @@ function validate(nameValue, urlValue) {
 }
 
 // Build Bookmarks
-function buildBookmarks() {
+function buildBookmarks(bookmarksContainer, bookmarks) {
   // Remove all bookmark elements
   bookmarksContainer.textContent = "";
   // Build items
@@ -55,7 +64,10 @@ function buildBookmarks() {
     const closeIcon = document.createElement("i");
     closeIcon.classList.add("fas", "fa-times");
     closeIcon.setAttribute("title", "Delete Bookmark");
-    closeIcon.setAttribute("onclick", `deleteBookmark('${id}')`);
+    closeIcon.setAttribute(
+      "onclick",
+      `deleteBookmark('${(bookmarksContainer, bookmarks, id)}')`
+    );
     // Favicon / Link Container
     const linkInfo = document.createElement("div");
     linkInfo.classList.add("name");
@@ -81,36 +93,69 @@ function buildBookmarks() {
 // Fetch bookmarks
 function fetchBookmarks() {
   // Get bookmarks from localStorage if available
-  if (localStorage.getItem("bookmarks")) {
-    bookmarks = JSON.parse(localStorage.getItem("bookmarks"));
-  } else {
-    // Create bookmarks object in localStorage
-    const id = `http://jacinto.design`;
-    bookmarks[id] = {
-      name: "Jacinto Design",
-      url: "http://jacinto.design",
-    };
-
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+  if (localStorage.getItem("socialBookmarks")) {
+    socialBookmarks = JSON.parse(localStorage.getItem("socialBookmarks"));
+    buildBookmarks(bookmarksContainer1, socialBookmarks);
   }
-  buildBookmarks();
+  if (localStorage.getItem("toolBookmarks")) {
+    toolBookmarks = JSON.parse(localStorage.getItem("toolBookmarks"));
+    buildBookmarks(bookmarksContainer2, toolBookmarks);
+  }
+  if (localStorage.getItem("devBookmarks")) {
+    devBookmarks = JSON.parse(localStorage.getItem("devBookmarks"));
+    buildBookmarks(bookmarksContainer3, devBookmarks);
+  }
+  if (localStorage.getItem("blogBookmarks")) {
+    blogBookmarks = JSON.parse(localStorage.getItem("blogBookmarks"));
+    buildBookmarks(bookmarksContainer4, blogBookmarks);
+  }
+  if (localStorage.getItem("courseBookmarks")) {
+    courseBookmarks = JSON.parse(localStorage.getItem("courseBookmarks"));
+    buildBookmarks(bookmarksContainer5, courseBookmarks);
+  }
 }
 
 // Delete Bookmark
-function deleteBookmark(id) {
+function deleteBookmark(bookmarksContainer, bookmarks, id) {
   // Loop through the bookmarks array
+
   if (bookmarks[id]) {
     delete bookmarks[id];
   }
   // Update bookmarks array in localStorage, re-populate DOM
-  localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+
+  if (bookmarksContainer === "") {
+    socialBookmarks[urlValue] = bookmark;
+    // Set bookmarks in localStorage, fetch, reset input fields
+    localStorage.setItem("socialBookmarks", JSON.stringify(socialBookmarks));
+  }
+  if (bookmarksContainer === "blog") {
+    blogBookmarks[urlValue] = bookmark;
+    localStorage.setItem("blogBookmarks", JSON.stringify(blogBookmarks));
+  }
+  if (bookmarksContainer === "dev") {
+    devBookmarks[urlValue] = bookmark;
+    localStorage.setItem("devBookmarks", JSON.stringify(devBookmarks));
+  }
+  if (bookmarksContainer === "tool") {
+    toolBookmarks[urlValue] = bookmark;
+    localStorage.setItem("toolBookmarks", JSON.stringify(toolBookmarks));
+  }
+  if (bookmarksContainer === "course") {
+    courseBookmarks[urlValue] = bookmark;
+    localStorage.setItem("courseBookmarks", JSON.stringify(courseBookmarks));
+  }
+  localStorage.setItem(bookmarks, JSON.stringify(bookmarks));
   fetchBookmarks();
 }
 
 function storeBookmark(e) {
   e.preventDefault();
+
   const nameValue = websiteNameEl.value;
   let urlValue = websiteUrlEl.value;
+  let containerValue = websiteFolderEl.value;
+
   if (!urlValue.includes("http://", "https://")) {
     urlValue = `https://${urlValue}`;
   }
@@ -123,9 +168,29 @@ function storeBookmark(e) {
     name: nameValue,
     url: urlValue,
   };
-  bookmarks[urlValue] = bookmark;
-  // Set bookmarks in localStorage, fetch, reset input fields
-  localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+
+  if (containerValue === "social") {
+    socialBookmarks[urlValue] = bookmark;
+    // Set bookmarks in localStorage, fetch, reset input fields
+    localStorage.setItem("socialBookmarks", JSON.stringify(socialBookmarks));
+  }
+  if (containerValue === "blog") {
+    blogBookmarks[urlValue] = bookmark;
+    localStorage.setItem("blogBookmarks", JSON.stringify(blogBookmarks));
+  }
+  if (containerValue === "dev") {
+    devBookmarks[urlValue] = bookmark;
+    localStorage.setItem("devBookmarks", JSON.stringify(devBookmarks));
+  }
+  if (containerValue === "tool") {
+    toolBookmarks[urlValue] = bookmark;
+    localStorage.setItem("toolBookmarks", JSON.stringify(toolBookmarks));
+  }
+  if (containerValue === "course") {
+    courseBookmarks[urlValue] = bookmark;
+    localStorage.setItem("courseBookmarks", JSON.stringify(courseBookmarks));
+  }
+
   fetchBookmarks();
   bookmarkForm.reset();
   websiteNameEl.focus();

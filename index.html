@@ -14,7 +14,11 @@
     <!-- Open Modal -->
     <h1 id="show-modal">Add Bookmark </h1>
     <!-- Bookmarks Container -->
-    <div class="container" id="bookmarks-container"></div>
+    <div class="container" id="bookmarks-container1"></div>
+    <div class="container" id="bookmarks-container2"></div>
+    <div class="container" id="bookmarks-container3"></div>
+    <div class="container" id="bookmarks-container4"></div>
+    <div class="container" id="bookmarks-container5"></div>
     <!-- Modal -->
     <div class="modal-container" id="modal">
         <div class="modal">
@@ -34,6 +38,18 @@
                         <label class="form-label" for="website-url">Website URL</label>
                         <input class="form-input" type="text" id="website-url">
                     </div>
+                    <!-- Website Folder Structure -->
+                    <div class="form-group">
+                        <label class="form-label" for="website-folder">Website Folder-Structure</label>
+                        <select name="website-folder" id="folder">
+                            <option value="social">Social</option>
+                            <option value="blog">Blog</option>
+                            <option value="dev">Dev</option>
+                            <option value="tool">Tool</option>
+                            <option value="course">Course</option>
+                        </select>
+                    </div>
+
                     <button type="submit">Save</button>
                 </form>
             </div>
