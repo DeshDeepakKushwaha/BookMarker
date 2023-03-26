@@ -52,21 +52,47 @@ function validate(nameValue, urlValue) {
 // Build Bookmarks
 function buildBookmarks(bookmarksContainer, bookmarks) {
   // Remove all bookmark elements
-  bookmarksContainer.textContent = "";
+  const containerAttr = bookmarksContainer.getAttribute("name");
+
+  if (containerAttr === "bookmarks-container1") {
+    bookmarksContainer.textContent = "Social";
+  }
+  if (containerAttr === "bookmarks-container2") {
+    bookmarksContainer.textContent = "Blog";
+  }
+  if (containerAttr === "bookmarks-container3") {
+    bookmarksContainer.textContent = "Dev";
+  }
+  if (containerAttr === "bookmarks-container4") {
+    bookmarksContainer.textContent = "Tool";
+  }
+  if (containerAttr === "bookmarks-container5") {
+    bookmarksContainer.textContent = "Course";
+  }
+
+  const itemParent = document.createElement("div");
+  itemParent.classList.add("itemParent");
+  itemParent.textContent = "";
   // Build items
+
   Object.keys(bookmarks).forEach((id) => {
     const { name, url } = bookmarks[id];
 
     // Item
     const item = document.createElement("div");
+
     item.classList.add("item");
+
     // Close Icon
     const closeIcon = document.createElement("i");
     closeIcon.classList.add("fas", "fa-times");
     closeIcon.setAttribute("title", "Delete Bookmark");
+    const containerAttribute = bookmarksContainer.getAttribute("name");
+    const bookmarks1 = JSON.stringify(bookmarks);
+
     closeIcon.setAttribute(
       "onclick",
-      `deleteBookmark('${(bookmarksContainer, bookmarks, id)}')`
+      `deleteBookmark('${containerAttribute}','${bookmarks1}','${id}')`
     );
     // Favicon / Link Container
     const linkInfo = document.createElement("div");
@@ -86,8 +112,11 @@ function buildBookmarks(bookmarksContainer, bookmarks) {
     // Append to bookmarks container
     linkInfo.append(favicon, link);
     item.append(closeIcon, linkInfo);
-    bookmarksContainer.appendChild(item);
+
+    itemParent.append(item);
   });
+
+  bookmarksContainer.append(itemParent);
 }
 
 // Fetch bookmarks
@@ -97,55 +126,64 @@ function fetchBookmarks() {
     socialBookmarks = JSON.parse(localStorage.getItem("socialBookmarks"));
     buildBookmarks(bookmarksContainer1, socialBookmarks);
   }
-  if (localStorage.getItem("toolBookmarks")) {
-    toolBookmarks = JSON.parse(localStorage.getItem("toolBookmarks"));
-    buildBookmarks(bookmarksContainer2, toolBookmarks);
+  if (localStorage.getItem("blogBookmarks")) {
+    blogBookmarks = JSON.parse(localStorage.getItem("blogBookmarks"));
+    buildBookmarks(bookmarksContainer2, blogBookmarks);
   }
   if (localStorage.getItem("devBookmarks")) {
     devBookmarks = JSON.parse(localStorage.getItem("devBookmarks"));
     buildBookmarks(bookmarksContainer3, devBookmarks);
   }
-  if (localStorage.getItem("blogBookmarks")) {
-    blogBookmarks = JSON.parse(localStorage.getItem("blogBookmarks"));
-    buildBookmarks(bookmarksContainer4, blogBookmarks);
+
+  if (localStorage.getItem("toolBookmarks")) {
+    toolBookmarks = JSON.parse(localStorage.getItem("toolBookmarks"));
+    buildBookmarks(bookmarksContainer4, toolBookmarks);
   }
+
   if (localStorage.getItem("courseBookmarks")) {
     courseBookmarks = JSON.parse(localStorage.getItem("courseBookmarks"));
     buildBookmarks(bookmarksContainer5, courseBookmarks);
+  } else {
+    // Create bookmarks object in localStorage
+    const id = `https://deshdeepakkushwaha.netlify.app/`;
+    socialBookmarks[id] = {
+      name: "Desh Deepak Kushwaha",
+      url: "https://deshdeepakkushwaha.netlify.app/",
+    };
+
+    localStorage.setItem("socialBookmarks", JSON.stringify(socialBookmarks));
+    buildBookmarks(bookmarksContainer1, socialBookmarks);
   }
 }
 
 // Delete Bookmark
-function deleteBookmark(bookmarksContainer, bookmarks, id) {
+function deleteBookmark(bookmarksContainer, bookmarks1, id) {
   // Loop through the bookmarks array
+
+  let bookmarks = JSON.parse(bookmarks1);
 
   if (bookmarks[id]) {
     delete bookmarks[id];
   }
   // Update bookmarks array in localStorage, re-populate DOM
 
-  if (bookmarksContainer === "") {
-    socialBookmarks[urlValue] = bookmark;
+  if (bookmarksContainer === "bookmarks-container1") {
     // Set bookmarks in localStorage, fetch, reset input fields
-    localStorage.setItem("socialBookmarks", JSON.stringify(socialBookmarks));
+    localStorage.setItem("socialBookmarks", JSON.stringify(bookmarks));
   }
-  if (bookmarksContainer === "blog") {
-    blogBookmarks[urlValue] = bookmark;
-    localStorage.setItem("blogBookmarks", JSON.stringify(blogBookmarks));
+  if (bookmarksContainer === "bookmarks-container2") {
+    localStorage.setItem("blogBookmarks", JSON.stringify(bookmarks));
   }
-  if (bookmarksContainer === "dev") {
-    devBookmarks[urlValue] = bookmark;
-    localStorage.setItem("devBookmarks", JSON.stringify(devBookmarks));
+  if (bookmarksContainer === "bookmarks-container3") {
+    localStorage.setItem("devBookmarks", JSON.stringify(bookmarks));
   }
-  if (bookmarksContainer === "tool") {
-    toolBookmarks[urlValue] = bookmark;
-    localStorage.setItem("toolBookmarks", JSON.stringify(toolBookmarks));
+  if (bookmarksContainer === "bookmarks-container4") {
+    localStorage.setItem("toolBookmarks", JSON.stringify(bookmarks));
   }
-  if (bookmarksContainer === "course") {
-    courseBookmarks[urlValue] = bookmark;
-    localStorage.setItem("courseBookmarks", JSON.stringify(courseBookmarks));
+  if (bookmarksContainer === "bookmarks-container5") {
+    localStorage.setItem("courseBookmarks", JSON.stringify(bookmarks));
   }
-  localStorage.setItem(bookmarks, JSON.stringify(bookmarks));
+
   fetchBookmarks();
 }
 

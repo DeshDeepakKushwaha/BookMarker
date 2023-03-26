@@ -34,6 +34,13 @@ h1:hover {
 
 /* Bookmarks */
 .container {
+  font-size: 30px;
+  margin: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.itemParent {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -45,6 +52,7 @@ h1:hover {
   border-radius: var(--border-radius);
   padding: 20px;
   margin: 10px;
+  font-size: 16px;
 }
 
 .item:hover {
@@ -186,7 +194,7 @@ button:focus {
 
 /* Media Query: Large Smartphone (Vertical) */
 @media screen and (max-width: 600px) {
-  .container {
+  .itemParent {
     flex-direction: column;
   }
 }
