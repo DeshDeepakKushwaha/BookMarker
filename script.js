@@ -194,7 +194,7 @@ function storeBookmark(e) {
   let urlValue = websiteUrlEl.value;
   let containerValue = websiteFolderEl.value;
 
-  if (!urlValue.includes("http://", "https://")) {
+  if (!urlValue.startsWith("http://") && !urlValue.startsWith("https://")) {
     urlValue = `https://${urlValue}`;
   }
   // Validate
