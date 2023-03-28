@@ -229,7 +229,6 @@ function storeBookmark(e) {
     name: nameValue,
     url: urlValue,
   };
-
   if (containerValue === "social") {
     socialBookmarks[urlValue] = bookmark;
     // Set bookmarks in localStorage, fetch, reset input fields
@@ -251,14 +250,15 @@ function storeBookmark(e) {
     courseBookmarks[urlValue] = bookmark;
     localStorage.setItem("courseBookmarks", JSON.stringify(courseBookmarks));
   }
-  if (containerValue === "code") {
+  if (containerValue === "githubCode") {
     codeBookmarks[urlValue] = bookmark;
     localStorage.setItem("codeBookmarks", JSON.stringify(codeBookmarks));
   }
-  if (containerValue === "live") {
+  if (containerValue === "githubLive") {
     liveBookmarks[urlValue] = bookmark;
     localStorage.setItem("liveBookmarks", JSON.stringify(liveBookmarks));
   }
+  console.log(codeBookmarks);
   fetchBookmarks();
   bookmarkForm.reset();
   websiteNameEl.focus();
