@@ -10,12 +10,16 @@ const bookmarksContainer2 = document.getElementById("bookmarks-container2");
 const bookmarksContainer3 = document.getElementById("bookmarks-container3");
 const bookmarksContainer4 = document.getElementById("bookmarks-container4");
 const bookmarksContainer5 = document.getElementById("bookmarks-container5");
+const bookmarksContainer6 = document.getElementById("bookmarks-container6");
+const bookmarksContainer7 = document.getElementById("bookmarks-container7");
 
 let socialBookmarks = {};
 let blogBookmarks = {};
 let toolBookmarks = {};
 let devBookmarks = {};
 let courseBookmarks = {};
+let codeBookmarks = {};
+let liveBookmarks = {};
 
 // Show Modal, Focus on Input
 function showModal() {
@@ -70,6 +74,12 @@ function buildBookmarks(bookmarksContainer, bookmarks) {
     bookmarksContainer.textContent = "Course";
   }
 
+  if (containerAttr === "bookmarks-container6") {
+    bookmarksContainer.textContent = "Github Code";
+  }
+  if (containerAttr === "bookmarks-container7") {
+    bookmarksContainer.textContent = "Github Live";
+  }
   const itemParent = document.createElement("div");
   itemParent.classList.add("itemParent");
   itemParent.textContent = "";
@@ -143,6 +153,14 @@ function fetchBookmarks() {
   if (localStorage.getItem("courseBookmarks")) {
     courseBookmarks = JSON.parse(localStorage.getItem("courseBookmarks"));
     buildBookmarks(bookmarksContainer5, courseBookmarks);
+  }
+  if (localStorage.getItem("codeBookmarks")) {
+    codeBookmarks = JSON.parse(localStorage.getItem("codeBookmarks"));
+    buildBookmarks(bookmarksContainer6, codeBookmarks);
+  }
+  if (localStorage.getItem("liveBookmarks")) {
+    liveBookmarks = JSON.parse(localStorage.getItem("liveBookmarks"));
+    buildBookmarks(bookmarksContainer7, liveBookmarks);
   } else {
     // Create bookmarks object in localStorage
     const id = `https://deshdeepakkushwaha.netlify.app/`;
@@ -183,7 +201,12 @@ function deleteBookmark(bookmarksContainer, bookmarks1, id) {
   if (bookmarksContainer === "bookmarks-container5") {
     localStorage.setItem("courseBookmarks", JSON.stringify(bookmarks));
   }
-
+  if (bookmarksContainer === "bookmarks-container6") {
+    localStorage.setItem("codeBookmarks", JSON.stringify(bookmarks));
+  }
+  if (bookmarksContainer === "bookmarks-container7") {
+    localStorage.setItem("liveBookmarks", JSON.stringify(bookmarks));
+  }
   fetchBookmarks();
 }
 
@@ -228,7 +251,14 @@ function storeBookmark(e) {
     courseBookmarks[urlValue] = bookmark;
     localStorage.setItem("courseBookmarks", JSON.stringify(courseBookmarks));
   }
-
+  if (containerValue === "code") {
+    codeBookmarks[urlValue] = bookmark;
+    localStorage.setItem("codeBookmarks", JSON.stringify(codeBookmarks));
+  }
+  if (containerValue === "live") {
+    liveBookmarks[urlValue] = bookmark;
+    localStorage.setItem("liveBookmarks", JSON.stringify(liveBookmarks));
+  }
   fetchBookmarks();
   bookmarkForm.reset();
   websiteNameEl.focus();
